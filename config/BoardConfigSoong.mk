@@ -28,7 +28,14 @@ $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call addVar,$(v))))
 
 SOONG_CONFIG_NAMESPACES += twrpGlobalVars
 SOONG_CONFIG_twrpGlobalVars += \
-    target_enforce_ab_ota_partition_list
+    target_enforce_ab_ota_partition_list \
+    target_init_vendor_lib
 
 # Soong bool variables
 SOONG_CONFIG_twrpGlobalVars_target_enforce_ab_ota_partition_list := $(TARGET_ENFORCE_AB_OTA_PARTITION_LIST)
+
+# Set default values
+TARGET_INIT_VENDOR_LIB ?= vendor_init
+
+# Soong value variables
+SOONG_CONFIG_twrpGlobalVars_target_init_vendor_lib := $(TARGET_INIT_VENDOR_LIB)
