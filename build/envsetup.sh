@@ -145,3 +145,8 @@ if [ -d $(gettop)/vendor/qcom/sdclang ]; then
             export SDCLANG_CONFIG="vendor/qcom/sdclang/sdclang.json"
             export SDCLANG_AE_CONFIG="vendor/qcom/sdclang/sdclangAE.json"
 fi
+
+# Empty the vts makefile
+if [ -s $(gettop)/frameworks/base/services/core/xsd/vts/Android.mk ]; then
+	echo -n "" > $(gettop)/frameworks/base/services/core/xsd/vts/Android.mk
+fi
