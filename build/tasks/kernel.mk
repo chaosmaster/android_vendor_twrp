@@ -80,6 +80,7 @@ DTB_OUT := $(TARGET_OUT_INTERMEDIATES)/DTB_OBJ
 KERNEL_CONFIG := $(KERNEL_OUT)/.config
 KERNEL_RELEASE := $(KERNEL_OUT)/include/config/kernel.release
 
+
 ifeq ($(KERNEL_ARCH),x86_64)
 KERNEL_DEFCONFIG_ARCH := x86
 else
@@ -372,14 +373,22 @@ endif # BOARD_INCLUDE_DTB_IN_BOOTIMG
 
 endif # FULL_KERNEL_BUILD
 
+define twrp-depmod
+	@echo "calling depmod on prebuilt modules"
+	mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/vendor/lib/modules/1.1
+	$(DEPMOD) -b $(TARGET_RECOVERY_ROOT_OUT)/vendor 1.1
+endef
+
 ## Install it
 
 ifeq ($(NEEDS_KERNEL_COPY),true)
 file := $(INSTALLED_KERNEL_TARGET)
 ALL_PREBUILT += $(file)
-$(file) : $(KERNEL_BIN) | $(ACP)
+$(file) : $(KERNEL_BIN) | $(ACP) | $(DEPMOD) 
 	$(transform-prebuilt-to-target)
-
+ifdef TARGET_PREBUILT_KERNEL
+	$(call twrp-depmod)
+endif
 ALL_PREBUILT += $(INSTALLED_KERNEL_TARGET)
 endif
 
