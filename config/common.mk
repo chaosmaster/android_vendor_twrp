@@ -5,11 +5,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.build.selinux=1 \
     persist.sys.disable_rescue=true
 
-# enable ADB authentication if not on eng build
-ifneq ($(TARGET_BUILD_VARIANT),eng)
-PRODUCT_SYSTEM_DEFAULT_PROPERTIES  += ro.adb.secure=1
-endif
-
 # Additional packages
 -include vendor/twrp/config/packages.mk
 
