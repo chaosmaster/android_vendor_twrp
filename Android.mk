@@ -22,6 +22,22 @@
 
 LOCAL_PATH := $(call my-dir)
 
+# Dummy file to apply post-install patch for twrp_soong
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := twrp_soong
+LOCAL_MODULE_CLASS := ETC
+LOCAL_MODULE_TAGS := optional
+LOCAL_MODULE_PATH := $(TARGET_ROOT_OUT)/system/bin
+LOCAL_REQUIRED_MODULES := teamwin
+
+# Create/remove empty Android.bp to make sure ninja gets run (fixes twres folder creation on dirty builds)
+LOCAL_POST_INSTALL_CMD += \
+    if [ -e $(LOCAL_PATH)/dummy/Android.bp ]; then rm -f $(LOCAL_PATH)/dummy/Android.bp; \
+    else touch $(LOCAL_PATH)/dummy/Android.bp; fi;
+
+include $(BUILD_PHONY_PACKAGE)
+
 # if some modules are built directly from this directory (not subdirectories),
 # their rules should be written here.
 
